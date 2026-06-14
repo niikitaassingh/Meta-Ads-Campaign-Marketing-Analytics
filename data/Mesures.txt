@@ -1,0 +1,51 @@
+Dynamic Title = IF('Select Dynamic Measure'[Select Dynamic Measure Order] = 0 ,"Impressions",
+                IF('Select Dynamic Measure'[Select Dynamic Measure Order] = 1 , "Engagements" ,
+                IF('Select Dynamic Measure'[Select Dynamic Measure Order] = 2 , "Clicks" ,
+                IF('Select Dynamic Measure'[Select Dynamic Measure Order] = 3 , "Shares" ,
+                IF('Select Dynamic Measure'[Select Dynamic Measure Order] = 4 , "Comments" ,
+                IF('Select Dynamic Measure'[Select Dynamic Measure Order] = 5 , "Purchases"  , "Others"  ))))))
+
+Select Dynamic Measure = {
+    ("Impressions", NAMEOF('All Measures'[Impressions]), 0),
+    ("Engagements", NAMEOF('All Measures'[Engagements]), 1),
+    ("Clicks", NAMEOF('All Measures'[Clicks]), 2),
+    ("Shares", NAMEOF('All Measures'[Shares]), 3),
+    ("Comments", NAMEOF('All Measures'[Comments]), 4),
+    ("Purchases", NAMEOF('All Measures'[Purchases]), 5)
+}
+
+Age Title = SELECTEDVALUE('Select Dynamic Measure'[Dynamic Title]) &  " By Age"
+
+Clicks = COUNTROWS(FILTER(ad_events , ad_events[event_type] = "Click"))
+
+Avg Budget per Campaign = AVERAGE(campaigns[total_budget])
+
+Comments = COUNTROWS(FILTER(ad_events , ad_events[event_type] = "Comment"))
+
+Conversion Rate = DIVIDE([Purchases],[Clicks],0)
+
+Country Title = SELECTEDVALUE('Select Dynamic Measure'[Dynamic Title]) &  " By Country "
+
+CTR (Click-Through Rate) = DIVIDE([Clicks], [Impressions] ,0)
+
+Engagement Rate = DIVIDE([Engagements] , [Impressions],0)
+
+Engagements = [Shares] + [Clicks] + [Comments]
+
+Gender Title = SELECTEDVALUE('Select Dynamic Measure'[Dynamic Title]) &  " By Gender"
+
+Hour Title = "Hourly " & SELECTEDVALUE('Select Dynamic Measure'[Dynamic Title]) &  " Hour"
+
+Impressions = COUNTROWS(FILTER(ad_events , ad_events[event_type] = "Impression"))
+
+Month Title = SELECTEDVALUE('Select Dynamic Measure'[Dynamic Title]) &  " By Month "
+
+Purchase Rate = DIVIDE([Purchases],[Impressions],0)
+
+Purchases = COUNTROWS(FILTER(ad_events , ad_events[event_type] = "Purchase"))
+
+Shares = COUNTROWS(FILTER(ad_events , ad_events[event_type] = "Share"))
+
+Total Budget = SUM(campaigns[total_budget])
+
+Weekly Title = "Weekly " & SELECTEDVALUE('Select Dynamic Measure'[Dynamic Title]) &  " Trade"
